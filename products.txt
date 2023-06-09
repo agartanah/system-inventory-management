@@ -1,2 +1,0 @@
-Milk 0,5~Factory~145~150~250
-Cookies 200g~Bakery~100~564~400

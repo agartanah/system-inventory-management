@@ -6,11 +6,30 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace system_inventory_management {
-  public class Product {
+  public interface IProduct {
+    void Attach(IObserver observer);
+    void Detach(IObserver observer);
+    void Notify(string ProductName);
+  }
+
+  public class Product : IProduct {
+    private List<IObserver> observers { get; set; } = new List<IObserver>();
+
     public string Name { get; set; }
     public string Manufacturer { get; set; }
     public double Price { get; set; }
-    public int Count { get; set; }
+    private int count;
+    public int Count {
+      get {
+        return count;
+      }
+      set {
+        count = value;
+        if (count <= StockingThreshold) {
+          Notify(Name);
+        }
+      }
+    }
     public int StockingThreshold { get; set; }
     public bool Сhanged = false;
 
@@ -23,5 +42,18 @@ namespace system_inventory_management {
       return ProductString;
     }
 
+    public void Attach(IObserver observer) {
+      observers.Add(observer);
+    }
+
+    public void Detach(IObserver observer) {
+      observers.Remove(observer);
+    }
+
+    public void Notify(string ProductName) {
+      foreach (IObserver observer in observers) {
+        observer.Update(ProductName);
+      }
+    }
   }
 }

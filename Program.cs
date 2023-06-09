@@ -9,11 +9,47 @@ namespace system_inventory_management {
   class Program {
     static void Menu() {
       Stock StockObj = new Stock();
+      ObserveCount ObserverCount = new ObserveCount();
 
-      Console.WriteLine(StockObj.ToString());
+      Console.WriteLine("\n" + StockObj.ToString() + "\n");
+
+      Console.Write("Выберите один из пунктов: \n\t1. Добавить новый товар\n\t2. Работать с существующими" +
+        "\nВведите желаемый пункт: ");
+      int Choice = int.Parse(Console.ReadLine());
+
+      if (Choice == 1) {
+        Product NewProduct = new Product();
+
+        Console.Write("Введите имя нового товара: ");
+        string Name = Console.ReadLine();
+        NewProduct.Name = Name;
+
+        Console.Write("Введите производителя нового товара: ");
+        string Manufacturer = Console.ReadLine();
+        NewProduct.Manufacturer = Manufacturer;
+
+        Console.Write("Введите цену нового товара: ");
+        double Price = double.Parse(Console.ReadLine());
+        NewProduct.Price = Price;
+
+        Console.Write("Введите имя нового товара: ");
+        int Count = int.Parse(Console.ReadLine());
+        NewProduct.Count = Count;
+
+        Console.Write("Введите имя нового товара: ");
+        int StockingThreshold = int.Parse(Console.ReadLine());
+        NewProduct.StockingThreshold = StockingThreshold;
+
+        StockObj.Products.Add(NewProduct);
+
+        StockObj.SyncProducts();
+
+        Menu();
+      }
 
       Console.Write("Введите имя товара: ");
       string ProductName = Console.ReadLine();
+
       Product UserProduct = StockObj.FindProduct(ProductName);
 
       if (UserProduct == null) {
@@ -22,8 +58,10 @@ namespace system_inventory_management {
         Menu();
       }
 
-      Console.Write("Выбирите один из пунктов: \n\t1. Добавить на склад\n\t2. Убрать со склада\n\t" +
-        "3. Обновить информацию о складе\n\t4. Добавить новый товар\nВведите один из пунктов: ");
+      UserProduct.Attach(ObserverCount);
+
+      Console.Write("\nВыбирите один из пунктов: \n\t1. Добавить на склад\n\t2. Убрать со склада\n\t" +
+        "3. Обновить информацию о складе\nВведите один из пунктов: ");
       int UserChoice = int.Parse(Console.ReadLine());
 
       switch (UserChoice) {
@@ -35,6 +73,8 @@ namespace system_inventory_management {
           UserProduct.Сhanged = true;
 
           StockObj.SyncProducts();
+
+          Menu();
           break;
         case 2:
           Console.Write("Введите кол-во товара, которое хотите убавить: ");
@@ -44,40 +84,20 @@ namespace system_inventory_management {
           UserProduct.Сhanged = true;
 
           StockObj.SyncProducts();
+
+          Menu();
           break;
         case 3:
           StockObj.SyncProducts();
 
           Console.WriteLine(StockObj.ToString());
-          break;
-        case 4:
-          Product NewProduct = new Product();
 
-          Console.Write("Введите имя нового товара: ");
-          string Name = Console.ReadLine();
-          NewProduct.Name = Name;
-
-          Console.Write("Введите производителя нового товара: ");
-          string Manufacturer = Console.ReadLine();
-          NewProduct.Manufacturer = Manufacturer;
-
-          Console.Write("Введите цену нового товара: ");
-          double Price = double.Parse(Console.ReadLine());
-          NewProduct.Price = Price;
-
-          Console.Write("Введите имя нового товара: ");
-          int Count = int.Parse(Console.ReadLine());
-          NewProduct.Count = Count;
-
-          Console.Write("Введите имя нового товара: ");
-          int StockingThreshold = int.Parse(Console.ReadLine());
-          NewProduct.StockingThreshold = StockingThreshold;
-
-          StockObj.Products.Add(NewProduct);
-
-          StockObj.SyncProducts();
+          Menu();
           break;
         default:
+          Console.WriteLine("Такого пункта не существует! Попробуйте заново!");
+
+          Menu();
           break;
       }
     }

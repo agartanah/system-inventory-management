@@ -9,9 +9,10 @@ using System.Net.Http.Headers;
 namespace system_inventory_management {
   public class Stock {
     public List<Product> Products { get; set; } = new List<Product>();
+    public string StockFilePath = Path.Combine(Environment.CurrentDirectory, @"products.txt");
 
     public Stock() {
-      string ProductsFileContent = File.ReadAllText(@"C:\Users\vyati\source\repos\system-inventory-management\products.txt");
+      string ProductsFileContent = File.ReadAllText(StockFilePath);
 
       string[] ProductsArray = ProductsFileContent.Split('\n');
 
@@ -48,12 +49,12 @@ namespace system_inventory_management {
     }
 
     public bool SyncProducts() {
-      File.WriteAllText(@"C:\Users\vyati\source\repos\system-inventory-management\products.txt", Parse());
+      File.WriteAllText(StockFilePath, Parse());
 
       return true;
     }
 
-    public string Parse() {
+    private string Parse() {
       string ParseProducts = string.Empty;
 
       foreach (var Product in Products) { 
