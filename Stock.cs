@@ -1,10 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net.Http.Headers;
 
 namespace system_inventory_management {
   public class Stock {
@@ -45,6 +41,7 @@ namespace system_inventory_management {
           return Product;
         }
       }
+
       return null;
     }
 
